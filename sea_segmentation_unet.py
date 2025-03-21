@@ -164,8 +164,14 @@ for json_file in json_files[:5]:  # 샘플 5개만 저장
     plt.title("Original Image")
 
     plt.subplot(1, 2, 2)
-    plt.imshow(pred_mask, cmap="jet")
+    im = plt.imshow(pred_mask, cmap="jet")  # 색상에 따라 클래스 인덱스 표현
     plt.title("Predicted Mask")
+
+    # ▶️ 컬러바 추가 (범례 역할)
+    cbar = plt.colorbar(im, fraction=0.046, pad=0.04)
+    cbar.set_ticks([0, 1, 2, 3, 4, 5])
+    cbar.set_ticklabels(["sky", "sea", "island", "rock", "wharf", "others"])
+    cbar.ax.tick_params(labelsize=8)
 
     output_file = os.path.join(OUTPUT_DIR, os.path.basename(json_file).replace(".json", "_pred.jpg"))
     plt.savefig(output_file)
