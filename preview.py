@@ -26,8 +26,8 @@ COLOR_MAP = {
 }
 
 # 🔧 루트 디렉토리 (상대경로)
-root_image_dir = r"./Training/[원천]남해_여수항_8구역_SEG/남해_여수항_8구역_SEG/20201205"
-root_label_dir = r"./Training/[라벨]남해_여수항_8구역_SEG/남해_여수항_8구역_SEG/20201205"
+root_image_dir = r"./Training/[원천]남해_여수항_8구역_SEG/남해_여수항_8구역_SEG/20201207"
+root_label_dir = r"./Training/[라벨]남해_여수항_8구역_SEG/남해_여수항_8구역_SEG/20201207"
 
 
 # 📂 모든 이미지/라벨 경로 정리
