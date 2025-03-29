@@ -80,6 +80,8 @@ def evaluate_model_iou(model, image_paths, mask_paths, sample_size=30):
         ious.append(score)
     print(f"📊 평균 IoU (샘플 {len(ious)}개): {np.mean(ious):.4f}")
 
+
+
 # 🔹 이미지-마스크 경로 매칭
 image_paths = []
 mask_paths = []
@@ -116,8 +118,15 @@ print(f"✅ 평가 대상 이미지-마스크 쌍: {len(image_paths)}개")
 
 # 🔹 모델 로드 & 평가 실행
 model = tf.keras.models.load_model(MODEL_PATH)
-evaluate_model_iou(model, image_paths, mask_paths, sample_size=30)
+
+# 다양한 샘플 수에 대해 평가
+for sample_size in [25, 50, 95]:
+    print(f"\n📦 샘플 개수: {sample_size}개")
+    evaluate_model_iou(model, image_paths, mask_paths, sample_size=sample_size)
+
+# 첫 이미지 시각화
 visualize_prediction(model, image_paths[0], mask_paths[0])
+
 
 # 🔹 방향키 시각화 + IoU
 current_index = 0

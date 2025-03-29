@@ -110,6 +110,15 @@ if ious:
 else:
     print("IOU 계산 실패: 유효한 이미지 없음")
 
+print("\n📌 구간별 평균 IOU")
+if len(ious) >= 95:
+    print(f"1~25번째 평균 IOU: {np.mean(ious[0:25]):.4f}")
+    print(f"1~50번째 평균 IOU: {np.mean(ious[0:50]):.4f}")
+    print(f"1~95번째 평균 IOU: {np.mean(ious[0:95]):.4f}")
+else:
+    print("❗ IOU 리스트가 95개 미만입니다.")
+
+
 # 🔹 시각화할 샘플 수
 num_samples = 5
 sample_files = random.sample(ious, min(num_samples, len(ious)))
