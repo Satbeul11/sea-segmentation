@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 from PIL import Image
 from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import random
 
 # 📌 디렉터리 설정
 BASE_DIR = r"C:\Users\LEEJINSE\Desktop\sim\춘계학술대회_논문준비\train\해상 객체 이미지"
@@ -107,3 +109,41 @@ if ious:
     print(f"\n📊 전체 평균 IOU: {mean_iou:.4f}")
 else:
     print("IOU 계산 실패: 유효한 이미지 없음")
+
+# 🔹 시각화할 샘플 수
+num_samples = 5
+sample_files = random.sample(ious, min(num_samples, len(ious)))
+
+# 🔹 다시 로드하며 시각화
+visualized = 0
+for root, _, files in os.walk(IMAGE_BASE_DIR):
+    for file in files:
+        if not file.lower().endswith(('.png', '.jpg', '.jpeg')): continue
+        filename_wo_ext = os.path.splitext(file)[0]
+        mask_path = find_mask_file(MASK_BASE_DIR, filename_wo_ext)
+        if not os.path.exists(mask_path): continue
+
+        image_path = os.path.join(root, file)
+        gray = load_image(image_path)
+        gt = load_mask(mask_path)
+        pred = get_sea_mask_by_hough(gray)
+        iou = compute_iou(pred, gt)
+
+        if iou in sample_files:
+            fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+            axes[0].imshow(gray, cmap='gray')
+            axes[0].set_title('Input Image')
+            axes[1].imshow(gt, cmap='gray')
+            axes[1].set_title('GT Mask')
+            axes[2].imshow(pred, cmap='gray')
+            axes[2].set_title(f'Pred Mask (IOU={iou:.2f})')
+            for ax in axes:
+                ax.axis('off')
+            plt.tight_layout()
+            plt.show()
+
+            visualized += 1
+            if visualized >= num_samples:
+                break
+    if visualized >= num_samples:
+        break
